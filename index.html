@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SAI — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0e0e0e;
+    --card: #111318;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0f0f0;
+    --muted: #666;
+    --dim: #999;
+    --accent: #e8572a;
+    --accent2: #4f8ef7;
+    --accent3: #a78bfa;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(232,87,42,0.5); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: all 0.15s ease;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: center; align-items: center;
+    padding: 22px 40px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-links { display: flex; gap: 48px; }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; color: var(--muted); transition: color 0.3s;
+    position: relative; padding-bottom: 4px;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:0; left:0;
+    width:0; height:1px; background:var(--text); transition: width 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+
+  section {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .dot-nav {
+    position: fixed; right: 28px; top: 50%;
+    transform: translateY(-50%); z-index: 100;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .dot-nav span {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--muted); cursor: pointer;
+    transition: all 0.3s; display: block;
+  }
+  .dot-nav span.active { background: var(--accent); transform: scale(1.6); }
+
+  .bg-glow {
+    position: absolute; border-radius: 50%;
+    filter: blur(120px); pointer-events: none; opacity: 0.18;
+  }
+
+  /* ─── HERO ─── */
+  #about { background: #060608; flex-direction: column; text-align: center; }
+  .hero-label {
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 140px); line-height: 0.92;
+    color: var(--text); opacity: 0; animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-sub {
+    margin-top: 28px; font-size: 16px; color: var(--dim);
+    font-weight: 300; line-height: 1.7; max-width: 480px;
+    opacity: 0; animation: fadeUp 0.9s ease 0.7s forwards;
+  }
+  .hero-cta {
+    margin-top: 48px; display: flex; gap: 16px; justify-content: center;
+    opacity: 0; animation: fadeUp 0.9s ease 0.9s forwards;
+  }
+  .btn {
+    padding: 14px 32px; font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none; border-radius: 2px;
+    cursor: pointer; transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--text); }
+
+  .ticker-wrap {
+    position: absolute; bottom: 0; left: 0; right: 0; overflow: hidden;
+    border-top: 1px solid var(--border); padding: 14px 0;
+    background: rgba(8,8,8,0.6);
+  }
+  .ticker { display: flex; white-space: nowrap; animation: ticker 22s linear infinite; }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px; letter-spacing: 0.2em; color: var(--muted); padding: 0 32px;
+  }
+  .ticker-item span { color: var(--accent); margin-right: 8px; }
+
+  /* ─── WHAT I DO ─── */
+  #about-2 { background: #07070a; flex-direction: column; }
+  .what-i-do-label {
+    font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--muted); position: absolute; top: 30%; left: 10%;
+  }
+  .what-i-do-text {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 5.5vw, 72px); font-weight: 800; line-height: 1.1;
+    max-width: 680px; position: absolute; top: 35%; left: 9%;
+  }
+
+  /* ─── APPROACH ─── */
+  #about-3 { background: #060609; }
+  .approach-label {
+    font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--muted); position: absolute; top: 30%; right: 10%;
+  }
+  .approach-text {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 68px); font-weight: 800;
+    line-height: 1.15; max-width: 580px; text-align: right;
+    position: absolute; top: 35%; right: 9%;
+  }
+  .approach-text em { font-style: normal; color: var(--muted); }
+
+  /* ─── SKILLS ─── */
+  #skills { background: #060608; flex-direction: column; padding: 100px 40px 60px; }
+  .skills-center { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .skills-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+  .skills-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 7vw, 96px); line-height: 1; margin-bottom: 12px; }
+  .skills-title .dim { color: var(--muted); }
+  .skills-sub { font-size: 18px; color: var(--dim); max-width: 500px; margin-bottom: 56px; }
+
+  .tech-orbit { position: relative; width: 460px; height: 460px; margin: 0 auto 48px; }
+  .orbit-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 90px; height: 90px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,87,42,0.2), rgba(79,142,247,0.07));
+    border: 1px solid rgba(232,87,42,0.2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .orbit-dot {
+    width: 14px; height: 14px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 30px var(--accent); animation: pulse-glow 2s ease infinite;
+  }
+  .orbit-ring {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    border-radius: 50%; border: 1px solid var(--border);
+  }
+  .ring1 { width: 200px; height: 200px; animation: spin 18s linear infinite; }
+  .ring2 { width: 340px; height: 340px; animation: spin 28s linear infinite reverse; }
+  .ring3 { width: 460px; height: 460px; animation: spin 42s linear infinite; }
+
+  .tech-icon {
+    position: absolute; width: 50px; height: 50px; border-radius: 12px;
+    background: var(--card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--text);
+    transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .tech-icon:hover { border-color: var(--accent); transform: scale(1.15); z-index: 10; }
+
+  .tech-strip { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 700px; }
+  .tech-pill {
+    padding: 8px 18px; border-radius: 100px; border: 1px solid var(--border);
+    font-size: 12px; color: var(--dim); letter-spacing: 0.08em;
+    display: flex; align-items: center; gap: 8px;
+    transition: all 0.3s; background: var(--card);
+  }
+  .tech-pill:hover { border-color: var(--accent2); color: var(--text); }
+  .tech-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* ─── STATS ─── */
+  #stats { background: #07070b; padding: 0 60px; }
+  .stats-inner { width: 100%; max-width: 1100px; }
+  .stats-top { border-bottom: 1px solid var(--border); padding-bottom: 48px; margin-bottom: 48px; }
+  .stats-overline { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .stats-headline { font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 52px); font-weight: 700; line-height: 1.2; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .stat-box {
+    background: var(--card); padding: 36px 28px;
+    border: 1px solid var(--border); position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .stat-box:hover { border-color: rgba(232,87,42,0.3); }
+  .stat-box::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity:0; transition: opacity 0.3s;
+  }
+  .stat-box:hover::before { opacity:1; }
+  .stat-number { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1; margin-bottom: 8px; }
+  .stat-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+  /* ─── WORK ─── */
+  #work { background: #060608; flex-direction: column; padding: 100px 60px; align-items: flex-start; }
+  .section-header { margin-bottom: 16px; position: relative; z-index: 2; }
+  .section-overline { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .section-sep { width: 40px; height: 2px; background: var(--accent); margin-bottom: 24px; }
+  .section-sep-purple { width: 40px; height: 2px; background: var(--accent3); margin-bottom: 24px; }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4.5vw, 58px); font-weight: 800; line-height: 1.1; max-width: 560px;
+  }
+  .section-title .ul { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 8px; text-decoration-thickness: 2px; }
+  .count-badge {
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    font-size: 10px; letter-spacing: 0.15em; color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .count-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+
+  .projects-list { width: 100%; max-width: 900px; position: relative; z-index: 2; margin-top: 32px; }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 4px;
+    padding: 32px 36px; margin-bottom: 16px; position: relative; overflow: hidden;
+    cursor: pointer; transition: border-color 0.3s, transform 0.3s;
+  }
+  .project-card:hover { border-color: rgba(232,87,42,0.3); transform: translateX(4px); }
+  .project-card::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background: linear-gradient(180deg, var(--accent), transparent); opacity:0; transition:opacity 0.3s;
+  }
+  .project-card:hover::before { opacity:1; }
+
+  .project-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .project-tags { display:flex; gap:8px; }
+  .p-tag {
+    font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    padding:4px 12px; border-radius:100px; border:1px solid rgba(255,255,255,0.1);
+    color:var(--dim); background:rgba(255,255,255,0.03);
+  }
+  .p-tag.red { border-color:rgba(232,87,42,0.4); color:var(--accent); background:rgba(232,87,42,0.08); }
+  .p-tag.blue { border-color:rgba(79,142,247,0.4); color:var(--accent2); background:rgba(79,142,247,0.08); }
+  .p-tag.purple { border-color:rgba(167,139,250,0.4); color:var(--accent3); background:rgba(167,139,250,0.08); }
+
+  .p-year { font-size:12px; color:var(--muted); letter-spacing:0.05em; }
+  .p-arrow {
+    width:28px; height:28px; border-radius:50%; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; color:var(--dim); transition:all 0.3s;
+  }
+  .project-card:hover .p-arrow { background:var(--accent); border-color:var(--accent); color:#fff; transform:rotate(45deg); }
+
+  .p-num { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--muted); margin-right:16px; }
+  .p-name { font-family:'Syne',sans-serif; font-size:clamp(20px,2.5vw,28px); font-weight:700; }
+  .p-desc { font-size:13px; color:var(--dim); line-height:1.7; max-width:600px; margin:12px 0 20px; }
+  .p-stack { display:flex; gap:8px; flex-wrap:wrap; }
+  .s-tag {
+    font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--muted); padding:4px 10px; border:1px solid var(--border);
+    border-radius:2px; background:rgba(255,255,255,0.02);
+  }
+
+  /* ─── EXPERIENCE ─── */
+  #experience { background: #060608; flex-direction: column; padding: 100px 60px; align-items: flex-start; }
+  .exp-list { width:100%; max-width:900px; position:relative; z-index:2; margin-top:32px; }
+  .exp-card {
+    background:var(--card); border:1px solid var(--border); border-radius:4px;
+    padding:32px 36px; margin-bottom:16px; position:relative; overflow:hidden;
+    transition:border-color 0.3s;
+  }
+  .exp-card:hover { border-color:rgba(167,139,250,0.3); }
+  .exp-card::after {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background: linear-gradient(180deg, var(--accent3), transparent); opacity:0; transition:opacity 0.3s;
+  }
+  .exp-card:hover::after { opacity:1; }
+  .exp-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; }
+  .exp-num { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--muted); margin-right:14px; }
+  .exp-co {
+    font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
+    padding:4px 12px; border-radius:100px;
+    border:1px solid rgba(167,139,250,0.35); color:var(--accent3);
+    background:rgba(167,139,250,0.08);
+  }
+  .exp-date { font-size:11px; color:var(--muted); letter-spacing:0.05em; }
+  .exp-role { font-family:'Syne',sans-serif; font-size:clamp(18px,2.2vw,24px); font-weight:700; margin-bottom:12px; }
+  .exp-desc { font-size:13px; color:var(--dim); line-height:1.7; max-width:620px; margin-bottom:20px; }
+  .exp-tags { display:flex; gap:8px; flex-wrap:wrap; }
+  .e-tag {
+    font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--muted); padding:4px 10px; border:1px solid var(--border); border-radius:2px;
+  }
+
+  /* ─── CONTACT ─── */
+  #contact { background: #060608; flex-direction: column; text-align: center; padding: 100px 40px; }
+  .contact-overline { font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); margin-bottom:28px; position:relative; z-index:2; }
+  .contact-title {
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(64px,10vw,140px); line-height:0.9;
+    position:relative; z-index:2;
+  }
+  .contact-title span { color:var(--muted); }
+  .contact-email {
+    margin-top:48px; display:inline-flex; align-items:center; gap:12px;
+    font-size:16px; color:var(--dim); text-decoration:none;
+    border:1px solid var(--border); padding:16px 28px; border-radius:100px;
+    transition:all 0.3s; position:relative; z-index:2;
+  }
+  .contact-email:hover { border-color:var(--text); color:var(--text); }
+  .contact-email .arr {
+    width:28px; height:28px; border-radius:50%; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; font-size:12px; transition:all 0.3s;
+  }
+  .contact-email:hover .arr { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .contact-socials { margin-top:48px; display:flex; gap:16px; justify-content:center; position:relative; z-index:2; }
+  .soc {
+    font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none;
+    padding:10px 20px; border:1px solid var(--border); border-radius:2px; transition:all 0.3s;
+  }
+  .soc:hover { color:var(--text); border-color:var(--text); }
+  .footer-bottom {
+    position:absolute; bottom:32px; left:0; right:0;
+    display:flex; justify-content:space-between; padding:0 40px;
+    font-size:11px; color:var(--muted); letter-spacing:0.05em;
+  }
+
+  /* REVEAL */
+  .reveal { opacity:0; transform:translateY(40px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity:1; transform:none; }
+  .d1 { transition-delay:0.1s; }
+  .d2 { transition-delay:0.2s; }
+  .d3 { transition-delay:0.3s; }
+  .d4 { transition-delay:0.4s; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:none} }
+  @keyframes spin { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
+  @keyframes pulse-glow { 0%,100%{box-shadow:0 0 20px rgba(232,87,42,0.4)} 50%{box-shadow:0 0 45px rgba(232,87,42,0.8)} }
+  @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--muted); border-radius:10px; }
+
+  @media(max-width:768px){
+    .dot-nav{display:none;}
+    nav{padding:16px 20px;}
+    .nav-links{gap:16px;}
+    .nav-links a{font-size:10px;}
+
+    .hero-title{font-size:56px;}
+    .hero-sub{font-size:14px;padding:0 20px;}
+    .hero-cta{flex-direction:column;align-items:center;gap:12px;}
+
+    .what-i-do-text{font-size:28px;left:5%;max-width:90%;}
+    .what-i-do-label{left:5%;}
+    .approach-text{font-size:26px;right:5%;max-width:90%;}
+    .approach-label{right:5%;}
+
+    .tech-orbit{width:260px;height:260px;}
+    .ring1{width:140px;height:140px;}
+    .ring2{width:220px;height:220px;}
+    .ring3{width:260px;height:260px;}
+    .tech-strip{padding:0 16px;}
+
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+    .stat-number{font-size:40px;}
+    #stats{padding:0 20px;}
+
+    #work{padding:80px 20px;}
+    .projects-list{margin-top:20px;}
+    .project-card{padding:20px 16px;}
+    .p-name{font-size:18px;}
+    .p-desc{font-size:12px;}
+
+    #experience{padding:80px 20px;}
+    .exp-list{margin-top:20px;}
+    .exp-card{padding:20px 16px;}
+    .exp-role{font-size:16px;}
+    .exp-desc{font-size:12px;}
+
+    .section-title{font-size:28px;}
+    .contact-title{font-size:52px;}
+    .contact-email{font-size:13px;padding:12px 20px;}
+    .contact-socials{flex-wrap:wrap;justify-content:center;padding:0 20px;}
+    #contact{padding:80px 20px;}
+    .footer-bottom{flex-direction:column;gap:8px;align-items:center;text-align:center;}
+  }
+  .popup-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .popup-overlay.active { opacity: 1; pointer-events: all; }
+
+  .popup-box {
+    background: #111318; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; width: 90%; max-width: 680px;
+    max-height: 85vh; overflow-y: auto;
+    padding: 48px; position: relative;
+    transform: translateY(24px); transition: transform 0.3s ease;
+  }
+  .popup-overlay.active .popup-box { transform: translateY(0); }
+
+  .popup-close {
+    position: absolute; top: 20px; right: 24px;
+    font-size: 22px; color: var(--muted); cursor: pointer;
+    background: none; border: none; transition: color 0.3s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .popup-close:hover { color: var(--text); }
+
+  .popup-tag {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px; margin-right: 8px;
+    border: 1px solid rgba(232,87,42,0.4); color: var(--accent);
+    background: rgba(232,87,42,0.08);
+  }
+  .popup-tag.blue { border-color: rgba(79,142,247,0.4); color: var(--accent2); background: rgba(79,142,247,0.08); }
+  .popup-tag.purple { border-color: rgba(167,139,250,0.4); color: var(--accent3); background: rgba(167,139,250,0.08); }
+
+  .popup-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px; line-height: 1; color: rgba(255,255,255,0.06);
+    position: absolute; top: 36px; right: 48px;
+  }
+  .popup-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(24px, 3vw, 36px); font-weight: 800;
+    margin: 20px 0 16px; line-height: 1.1;
+  }
+  .popup-desc {
+    font-size: 14px; color: var(--dim); line-height: 1.8;
+    margin-bottom: 28px;
+  }
+  .popup-section-label {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .popup-features {
+    display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px;
+  }
+  .popup-feature {
+    font-size: 13px; color: var(--dim); line-height: 1.6;
+    padding-left: 16px; position: relative;
+  }
+  .popup-feature::before {
+    content:''; position: absolute; left: 0; top: 9px;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent);
+  }
+  .popup-stack { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+  .popup-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text); text-decoration: none;
+    border: 1px solid var(--border); padding: 12px 24px; border-radius: 2px;
+    transition: all 0.3s; margin-right: 12px;
+  }
+  .popup-link:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-links">
+    <a href="#about" class="active" data-s="about">About</a>
+    <a href="#skills" data-s="skills">Skills</a>
+    <a href="#work" data-s="work">Work</a>
+    <a href="#experience" data-s="experience">Experience</a>
+    <a href="#contact" data-s="contact">Contact</a>
+  </div>
+</nav>
+
+<div class="dot-nav" id="dotNav">
+  <span class="active" data-t="about"></span>
+  <span data-t="about-2"></span>
+  <span data-t="about-3"></span>
+  <span data-t="skills"></span>
+  <span data-t="stats"></span>
+  <span data-t="work"></span>
+  <span data-t="experience"></span>
+  <span data-t="contact"></span>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="about">
+  <div class="bg-glow" style="width:700px;height:700px;background:radial-gradient(circle,#e8572a,transparent 70%);top:-20%;left:-15%"></div>
+  <div class="bg-glow" style="width:600px;height:600px;background:radial-gradient(circle,#4f8ef7,transparent 70%);bottom:-20%;right:-10%"></div>
+  <div style="position:relative;z-index:2;text-align:center">
+    <p class="hero-label">Student Developer</p>
+    <h1 class="hero-title">Sai Dhapte<span>.</span></h1>
+    <p class="hero-sub">Computer Science Engineering student exploring the intersection of code, simulation, and the web.</p>
+    <div class="hero-cta">
+      <a href="#work" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+    </div>
+  </div>
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span>✦</span>DESIGN</span>
+      <span class="ticker-item"><span>✦</span>MARKETING</span>
+      <span class="ticker-item"><span>✦</span>VS CODE</span>
+      <span class="ticker-item"><span>✦</span>NOTION</span>
+      <span class="ticker-item"><span>✦</span>MONGODB</span>
+      <span class="ticker-item"><span>✦</span>HTML CSS</span>
+      <span class="ticker-item"><span>✦</span>GITHUB</span>
+      <span class="ticker-item"><span>✦</span>STUDENT DEV</span>
+      <span class="ticker-item"><span>✦</span>C</span>
+      <span class="ticker-item"><span>✦</span>PYTHON</span>
+      <span class="ticker-item"><span>✦</span>STATISTICS</span>
+      <span class="ticker-item"><span>✦</span>NETWORK ANALYSIS</span>
+      <span class="ticker-item"><span>✦</span>MONGODB</span>
+      <span class="ticker-item"><span>✦</span>FUSION360</span>
+      <span class="ticker-item"><span>✦</span>PROTEUS</span>
+      <span class="ticker-item"><span>✦</span>STUDENT DEV</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHAT I DO ══ -->
+<section id="about-2">
+  <div class="bg-glow" style="width:600px;height:600px;background:radial-gradient(circle,#e8572a0f,transparent 70%);top:-20%;right:-10%"></div>
+  <span class="what-i-do-label reveal">WHAT I DO</span>
+  <h2 class="what-i-do-text reveal d1">I create websites and apps that people genuinely love to use.</h2>
+</section>
+
+<!-- ══ APPROACH ══ -->
+<section id="about-3">
+  <div class="bg-glow" style="width:600px;height:600px;background:radial-gradient(circle,#4f8ef70d,transparent 70%);bottom:-20%;left:-10%"></div>
+  <span class="approach-label reveal">APPROACH</span>
+  <h2 class="approach-text reveal d1">Clean code.<br/><em>Thoughtful</em><br/>design. Smooth<br/>motion.</h2>
+</section>
+
+<!-- ══ SKILLS ══ -->
+<section id="skills">
+  <div class="bg-glow" style="width:800px;height:800px;background:radial-gradient(circle,#1a1a3a,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <div class="skills-center">
+    <p class="skills-label reveal">TECHNICAL ARSENAL</p>
+    <h2 class="skills-title reveal d1">Crafting with <span class="dim">Modern Edge.</span></h2>
+    <p class="skills-sub reveal d2">Tools I've picked up so far, still learning, always adding more.</p>
+
+    <div class="tech-orbit reveal d2">
+      <div class="orbit-ring ring1">
+        <div class="tech-icon" style="top:-25px;left:50%;transform:translateX(-50%)">⚛</div>
+        <div class="tech-icon" style="bottom:-25px;left:50%;transform:translateX(-50%)">▲</div>
+      </div>
+      <div class="orbit-ring ring2">
+        <div class="tech-icon" style="top:-25px;left:50%;transform:translateX(-50%);background:#1a2a1a;border-color:#3ddc8433;color:#3ddc84">C</div>
+        <div class="tech-icon" style="right:-25px;top:50%;transform:translateY(-50%);background:#1a1a2e;border-color:#4f8ef733;color:#4f8ef7">PY</div>
+        <div class="tech-icon" style="bottom:-25px;left:50%;transform:translateX(-50%);font-size:9px;background:#2a1a1a;border-color:#ff990033;color:#ff9900">HTML</div>
+        <div class="tech-icon" style="left:-25px;top:50%;transform:translateY(-50%);background:#1a2030;border-color:#4f8ef733;color:#38bdf8">CSS</div>
+      </div>
+      <div class="orbit-ring ring3">
+        <div class="tech-icon" style="top:-25px;right:80px;font-size:9px;background:#1a2a1a;border-color:#3ddc8433;color:#3ddc84">GIT</div>
+        <div class="tech-icon" style="bottom:-25px;right:80px;font-size:9px;background:#2a1a2a;border-color:#a78bfa33;color:#a78bfa">PRO</div>
+        <div class="tech-icon" style="top:-25px;left:80px;font-size:9px">F360</div>
+        <div class="tech-icon" style="bottom:-25px;left:80px;font-size:9px;color:#f7df1e">VS</div>
+      </div>
+      <div class="orbit-center"><div class="orbit-dot"></div></div>
+    </div>
+
+    <div class="tech-strip reveal d3">
+      <span class="tech-pill"><span class="dot" style="background:#3ddc84"></span>C</span>
+      <span class="tech-pill"><span class="dot" style="background:#fff"></span>Python</span>
+      <span class="tech-pill"><span class="dot" style="background:#4f8ef7"></span>HTML</span>
+      <span class="tech-pill"><span class="dot" style="background:#68a063"></span>CSS</span>
+      <span class="tech-pill"><span class="dot" style="background:#e8572a"></span>Github</span>
+      <span class="tech-pill"><span class="dot" style="background:#3ddc84"></span>MongoDB</span>
+      <span class="tech-pill"><span class="dot" style="background:#ff9900"></span>Proteus</span>
+      <span class="tech-pill"><span class="dot" style="background:#38bdf8"></span>Fusion</span>
+      <span class="tech-pill"><span class="dot" style="background:#a78bfa"></span>VScode</span>
+      <span class="tech-pill"><span class="dot" style="background:#e25b1e"></span>Touch Designing</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<section id="stats">
+  <div class="stats-inner">
+    <div class="stats-top reveal">
+      <p class="stats-overline">By the numbers</p>
+      <h3 class="stats-headline">Pushing the boundaries<br/>of what's possible on the web.</h3>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box reveal d1"><div class="stat-number">5+</div><div class="stat-label">Projects Built</div></div>
+      <div class="stat-box reveal d2"><div class="stat-number">10+</div><div class="stat-label">Technologies Learned</div></div>
+      <div class="stat-box reveal d3"><div class="stat-number">100%</div><div class="stat-label">Passion &amp; Drive</div></div>
+      <div class="stat-box reveal d4"><div class="stat-number">∞</div><div class="stat-label">Curiosity</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WORK ══ -->
+<section id="work">
+  <div class="bg-glow" style="width:500px;height:500px;background:radial-gradient(circle,#4f8ef711,transparent 70%);top:0;right:0"></div>
+  <div class="section-header reveal" style="width:100%;max-width:900px;position:relative;z-index:2">
+    <p class="section-overline">Selected Work</p>
+    <div class="section-sep"></div>
+    <h2 class="section-title"><span class="ul">Things</span> I've built<br/>from scratch.</h2>
+    <span class="count-badge">3 Projects</span>
+  </div>
+  <div class="projects-list">
+    <div class="project-card reveal d1">
+      <div class="project-meta">
+        <div class="project-tags">
+          <span class="p-tag red">+ Simulation</span>
+          <span class="p-tag">Proteus</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <span class="p-year">2025</span>
+          <div class="p-arrow"onclick="openPopup(1)">↗</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <span class="p-num">01</span>
+        <h3 class="p-name">Robot Controller Simulation</h3>
+      </div>
+      <p class="p-desc">Simulated controllers for specific robots using Proteus. Designed and tested control logic for robotic behavior in a virtual environment.</p>
+      <div class="p-stack">
+        <span class="s-tag">Proteus</span><span class="s-tag">Simulation</span><span class="s-tag">Circuit Design</span><span class="s-tag">Electronics</span><span class="s-tag">Robotics</span>
+      </div>
+    </div>
+    <div class="project-card reveal d2">
+      <div class="project-meta">
+        <div class="project-tags">
+          <span class="p-tag blue">+ Finance</span>
+          <span class="p-tag">Python</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <span class="p-year">2026</span>
+          <div class="p-arrow"onclick="openPopup(2)">↗</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <span class="p-num">02</span>
+        <h3 class="p-name">Stock Market Simulation</h3>
+      </div>
+      <p class="p-desc">Simulated stock market behavior and trading patterns using Python. Models price fluctuations and basic trading logic in a controlled environment.</p>
+      <div class="p-stack">
+        <span class="s-tag">Python</span><span class="s-tag">Data Analysis</span><span class="s-tag">Machine Learning</span><span class="s-tag">Data Logic</span><span class="s-tag">Simulation</span>
+      </div>
+    </div>
+    <div class="project-card reveal d3">
+      <div class="project-meta">
+        <div class="project-tags">
+          <span class="p-tag purple">+ Finance</span>
+          <span class="p-tag">Goal Planner</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <span class="p-year">2025</span>
+          <div class="p-arrow"onclick="openPopup(3)">↗</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <span class="p-num">03</span>
+        <h3 class="p-name">Lifetime Financial Planner</h3>
+      </div>
+      <p class="p-desc">A financial goal planner that calculates exactly how much you need to earn based on your expenses, plans, and life goals.</p>
+      <div class="p-stack">
+        <span class="s-tag">HTML</span><span class="s-tag">CSS</span><span class="s-tag">JavaScript</span><span class="s-tag">Planning</span><span class="s-tag">Logic</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPERIENCE ══ -->
+<section id="experience">
+  <div class="bg-glow" style="width:600px;height:600px;background:radial-gradient(circle,#a78bfa11,transparent 70%);bottom:-10%;left:-10%"></div>
+  <div class="section-header reveal" style="width:100%;max-width:900px;position:relative;z-index:2">
+    <p class="section-overline">History</p>
+    <div class="section-sep-purple"></div>
+    <h2 class="section-title">Currently studying.<br/>Always building.</h2>
+    <span class="count-badge" style="top:auto;bottom:0">1 Institution</span>
+  </div>
+  <div class="exp-list">
+    <div class="exp-card reveal d1">
+      <div class="exp-header">
+        <div style="display:flex;align-items:center">
+          <span class="exp-num">01</span>
+          <span class="exp-co">MITAOE</span>
+        </div>
+        <span class="exp-date">2025 – 2026</span>
+      </div>
+      <h3 class="exp-role">B.E. Computer Engineering (Software Engineering)</h3>
+      <p class="exp-desc">First year student at MIT Academy of Engineering, Alandi, Pune. Affiliated to Savitribai Phule Pune University. Currently learning core CS fundamentals while building projects in Python, C, and web technologies.</p>
+      <div class="exp-tags">
+        <span class="e-tag">SPPU</span><span class="e-tag">Computer Engineering</span><span class="e-tag">Software Engineering</span><span class="e-tag">FY 2025-26</span>
+      </div>
+    </div>
+    <div class="exp-card reveal d2">
+      <div class="exp-header">
+        <div style="display:flex;align-items:center">
+          <span class="exp-num">02</span>
+          <span class="exp-co">MITAOE</span>
+        </div>
+        <span class="exp-date">2025 – Present</span>
+      </div>
+      <h3 class="exp-role">Member — Invictus Robotics Club</h3>
+      <p class="exp-desc">Active member of Invictus, the official robotics club at MITAOE. Engaging with robotics, simulations, and hands-on engineering challenges alongside like-minded peers.</p>
+      <div class="exp-tags">
+        <span class="e-tag">Robotics</span><span class="e-tag">Simulation</span><span class="e-tag">Proteus</span><span class="e-tag">Fusion360</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="bg-glow" style="width:800px;height:800px;background:radial-gradient(circle,#e8572a0d,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <p class="contact-overline reveal">Next Step</p>
+  <h2 class="contact-title reveal d1">Let's build<br/><span>together.</span></h2>
+  <a href="mailto:yourname@gmail.com" class="contact-email reveal d2">
+    saidhapte4@gmail.com
+    <span class="arr">↗</span>
+  </a>
+  <div class="contact-socials reveal d3">
+    <a href="https://github.com/Sai-fi410/" class="soc">GitHub</a>
+    <a href="https://www.linkedin.com/in/sai-dhapte-749a12386/" class="soc">LinkedIn</a>
+    <a href="#" class="soc">Twitter</a>
+    <a href="#" class="soc">Resume ↓</a>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Sai</span>
+    <span>Designed &amp; Built with passion</span>
+  </div>
+</section>
+
+<script>
+  // ── Custom cursor ──
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function tick(){
+    rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(tick);
+  })();
+  document.querySelectorAll('a,button,.project-card,.exp-card,.stat-box').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.transform='translate(-50%,-50%) scale(1.8)';ring.style.borderColor='rgba(232,87,42,0.8)';});
+    el.addEventListener('mouseleave',()=>{ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(232,87,42,0.5)';});
+  });
+
+  // ── Scroll reveal ──
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // ── Active nav + dots ──
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const dots = document.querySelectorAll('.dot-nav span');
+  const secObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id=e.target.id;
+        navLinks.forEach(a=>{a.classList.remove('active'); if(id.startsWith(a.dataset.s)) a.classList.add('active');});
+        dots.forEach(d=>{d.classList.remove('active'); if(d.dataset.t===id) d.classList.add('active');});
+      }
+    });
+  },{threshold:0.5});
+  sections.forEach(s=>secObs.observe(s));
+
+  dots.forEach(d=>{
+    d.addEventListener('click',()=>{
+      const t=document.getElementById(d.dataset.t);
+      if(t) t.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+const popupData = {
+    1: {
+      num: '01',
+      tags: ['Simulation', 'Proteus'],
+      tagColors: ['', ''],
+      title: 'Robot Controller Simulation',
+      desc: 'Designed and simulated two Arduino-based robotics control systems in Proteus. Both circuits were tested virtually and HEX files were generated using Arduino IDE for real-world deployment.',
+      features: [
+        'Quadruped Servo Controller using Arduino Mega 2560 — controls 8 servo motors via PWM signals with external 5V supply integration for servo stability',
+        'Self-Balancing Robot Controller using Arduino Uno + L298 Motor Driver — dual DC motor control with H-Bridge logic and tilt input simulated via potentiometer in Proteus',
+        'Both HEX files compiled and tested successfully in Proteus simulation environment'
+      ],
+      stack: ['Arduino', 'Proteus', 'C++', 'PWM', 'L298 Driver', 'Arduino IDE'],
+      links: [{ label: 'GitHub', url: 'https://github.com' }]
+    },
+    2: {
+      num: '02',
+      tags: ['Finance', 'Data'],
+      tagColors: ['blue', 'blue'],
+      title: 'MSI — Market Structure Intelligence',
+      desc: 'An interactive financial network analysis dashboard that does not track prices — it tracks structure. The hidden skeleton of how 20 global assets across US, Europe, Asia, and India are connected to each other at any point in time.',
+      features: [
+        'Rolling correlation windows across 20 global assets to detect structural shifts in real time',
+        'Minimum Spanning Tree extraction using graph theory to find the structural backbone of the market',
+        'Eigenvector Centrality ranking to identify systemically important assets',
+        'Market Stress Index combining correlation and volatility into a single tension metric',
+        'Kamada-Kawai spatial layout with full interactive dashboard, autoplay, and date slider'
+      ],
+      stack: ['Python', 'Graph Theory', 'Linear Algebra', 'Statistics', 'NetworkX', 'Plotly'],
+      links: [
+        { label: 'Live Demo', url: 'https://lnkd.in/dJJEBkrw' },
+        { label: 'GitHub', url: 'https://lnkd.in/dKEGmtwG' }
+      ]
+    },
+    3: {
+      num: '03',
+      tags: ['Finance', 'Goal Planner'],
+      tagColors: ['purple', 'purple'],
+      title: 'Indian Lifetime Financial Planner',
+      desc: 'A web-based financial calculator built for Indian households. Takes your complete life picture as input — income, inflation, family goals, expenses — and tells you exactly how much you need to earn to achieve everything you plan for.',
+      features: [
+        'Inputs: annual salary, salary growth rate, inflation rate, years of work remaining',
+        'Life goals tracking: children\'s education and wedding costs, dream car, two-wheelers, monthly living expenses, retirement savings',
+        'Outputs total lifetime earnings adjusted for inflation vs total cost of all life goals',
+        'Financial summary showing remaining surplus or deficit with exact amount needed to meet all goals'
+      ],
+      stack: ['HTML', 'CSS', 'JavaScript'],
+      links: []
+    }
+  };
+
+  function openPopup(id) {
+    const data = popupData[id];
+    const tagsHtml = data.tags.map((t, i) =>
+      `<span class="popup-tag ${data.tagColors[i]}">${t}</span>`
+    ).join('');
+    const featuresHtml = data.features.map(f =>
+      `<div class="popup-feature">${f}</div>`
+    ).join('');
+    const stackHtml = data.stack.map(s =>
+      `<span class="s-tag">${s}</span>`
+    ).join('');
+    const linksHtml = data.links.map(l =>
+      `<a href="${l.url}" target="_blank" class="popup-link">${l.label} ↗</a>`
+    ).join('');
+
+    document.getElementById('popup-content').innerHTML = `
+      <div class="popup-num">${data.num}</div>
+      <div>${tagsHtml}</div>
+      <h2 class="popup-title">${data.title}</h2>
+      <p class="popup-desc">${data.desc}</p>
+      <p class="popup-section-label">What it does</p>
+      <div class="popup-features">${featuresHtml}</div>
+      <p class="popup-section-label">Built with</p>
+      <div class="popup-stack">${stackHtml}</div>
+      ${linksHtml ? `<div style="margin-top:8px">${linksHtml}</div>` : ''}
+    `;
+    document.getElementById('popup-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAllPopups() {
+    document.getElementById('popup-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function closePopup(e) {
+    if (e.target === document.getElementById('popup-overlay')) closeAllPopups();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAllPopups();
+  });
+
+</script>
+    <!-- POPUPS -->
+    <div class="popup-overlay" id="popup-overlay" onclick="closePopup(event)">
+        <div class="popup-box" id="popup-box">
+            <button class="popup-close" onclick="closeAllPopups()">✕</button>
+            <div id="popup-content"></div>
+        </div>
+    </div>
+</body>
+</html>
