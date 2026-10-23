@@ -576,37 +576,79 @@
     <h2 class="skills-title reveal d1">Crafting with <span class="dim">Modern Edge.</span></h2>
     <p class="skills-sub reveal d2">Tools I've picked up so far, still learning, always adding more.</p>
 
-    <div class="tech-orbit reveal d2">
-      <div class="orbit-ring ring1">
-        <div class="tech-icon" style="top:-25px;left:50%;transform:translateX(-50%)">⚛</div>
-        <div class="tech-icon" style="bottom:-25px;left:50%;transform:translateX(-50%)">▲</div>
-      </div>
-      <div class="orbit-ring ring2">
-        <div class="tech-icon" style="top:-25px;left:50%;transform:translateX(-50%);background:#1a2a1a;border-color:#3ddc8433;color:#3ddc84">C</div>
-        <div class="tech-icon" style="right:-25px;top:50%;transform:translateY(-50%);background:#1a1a2e;border-color:#4f8ef733;color:#4f8ef7">PY</div>
-        <div class="tech-icon" style="bottom:-25px;left:50%;transform:translateX(-50%);font-size:9px;background:#2a1a1a;border-color:#ff990033;color:#ff9900">HTML</div>
-        <div class="tech-icon" style="left:-25px;top:50%;transform:translateY(-50%);background:#1a2030;border-color:#4f8ef733;color:#38bdf8">CSS</div>
-      </div>
-      <div class="orbit-ring ring3">
-        <div class="tech-icon" style="top:-25px;right:80px;font-size:9px;background:#1a2a1a;border-color:#3ddc8433;color:#3ddc84">GIT</div>
-        <div class="tech-icon" style="bottom:-25px;right:80px;font-size:9px;background:#2a1a2a;border-color:#a78bfa33;color:#a78bfa">PRO</div>
-        <div class="tech-icon" style="top:-25px;left:80px;font-size:9px">F360</div>
-        <div class="tech-icon" style="bottom:-25px;left:80px;font-size:9px;color:#f7df1e">VS</div>
-      </div>
-      <div class="orbit-center"><div class="orbit-dot"></div></div>
-    </div>
+    <div style="display:flex;gap:48px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;position:relative;z-index:2" class="reveal d2">
 
-    <div class="tech-strip reveal d3">
-      <span class="tech-pill"><span class="dot" style="background:#3ddc84"></span>C</span>
-      <span class="tech-pill"><span class="dot" style="background:#fff"></span>Python</span>
-      <span class="tech-pill"><span class="dot" style="background:#4f8ef7"></span>HTML</span>
-      <span class="tech-pill"><span class="dot" style="background:#68a063"></span>CSS</span>
-      <span class="tech-pill"><span class="dot" style="background:#e8572a"></span>Github</span>
-      <span class="tech-pill"><span class="dot" style="background:#3ddc84"></span>Tableau</span>
-      <span class="tech-pill"><span class="dot" style="background:#ff9900"></span>Proteus</span>
-      <span class="tech-pill"><span class="dot" style="background:#38bdf8"></span>Fusion</span>
-      <span class="tech-pill"><span class="dot" style="background:#a78bfa"></span>VScode</span>
-      <span class="tech-pill"><span class="dot" style="background:#e25b1e"></span>Touch Designing</span>
+      <!-- Ring 1: Core Languages -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <p class="skills-label" style="margin:0">Core Languages</p>
+        <div style="position:relative;width:200px;height:200px">
+          <div class="orbit-ring" style="width:200px;height:200px;animation:spin 18s linear infinite">
+            <div class="tech-icon" style="top:-25px;left:50%;transform:translateX(-50%)">C</div>
+            <div class="tech-icon" style="bottom:-25px;left:50%;transform:translateX(-50%)">C++</div>
+            <div class="tech-icon" style="right:-25px;top:50%;transform:translateY(-50%)">JS</div>
+            <div class="tech-icon" style="left:-25px;top:50%;transform:translateY(-50%)">PY</div>
+          </div>
+          <div class="orbit-center" style="width:70px;height:70px">
+            <div class="orbit-dot"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:220px">
+          <span class="tech-pill"><span class="dot" style="background:#4f8ef7"></span>C</span>
+          <span class="tech-pill"><span class="dot" style="background:#4f8ef7"></span>C++</span>
+          <span class="tech-pill"><span class="dot" style="background:#f7df1e"></span>JavaScript</span>
+          <span class="tech-pill"><span class="dot" style="background:#3776ab"></span>Python</span>
+          <span class="tech-pill"><span class="dot" style="background:#e8572a"></span>HTML</span>
+          <span class="tech-pill"><span class="dot" style="background:#38bdf8"></span>CSS</span>
+          <span class="tech-pill"><span class="dot" style="background:#68a063"></span>Node.js</span>
+        </div>
+      </div>
+
+      <!-- Ring 2: Dev Tools -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <p class="skills-label" style="margin:0">Dev Tools</p>
+        <div style="position:relative;width:200px;height:200px">
+          <div class="orbit-ring" style="width:200px;height:200px;animation:spin 24s linear infinite reverse">
+            <div class="tech-icon" style="top:-25px;left:50%;transform:translateX(-50%);font-size:9px">GIT</div>
+            <div class="tech-icon" style="bottom:-25px;left:50%;transform:translateX(-50%);font-size:9px">PRO</div>
+            <div class="tech-icon" style="right:-25px;top:50%;transform:translateY(-50%);font-size:9px">F360</div>
+            <div class="tech-icon" style="left:-25px;top:50%;transform:translateY(-50%);font-size:9px">TAB</div>
+          </div>
+          <div class="orbit-center" style="width:70px;height:70px;background:radial-gradient(circle,rgba(79,142,247,0.2),rgba(79,142,247,0.05));border-color:rgba(79,142,247,0.2)">
+            <div class="orbit-dot" style="background:var(--accent2);box-shadow:0 0 30px var(--accent2)"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:220px">
+          <span class="tech-pill"><span class="dot" style="background:#e25b1e"></span>GitHub</span>
+          <span class="tech-pill"><span class="dot" style="background:#a78bfa"></span>Proteus</span>
+          <span class="tech-pill"><span class="dot" style="background:#ff9900"></span>Fusion360</span>
+          <span class="tech-pill"><span class="dot" style="background:#38bdf8"></span>VS Code</span>
+          <span class="tech-pill"><span class="dot" style="background:#e8572a"></span>Tableau</span>
+        </div>
+      </div>
+
+      <!-- Ring 3: Software & Platforms -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <p class="skills-label" style="margin:0">Software & Platforms</p>
+        <div style="position:relative;width:200px;height:200px">
+          <div class="orbit-ring" style="width:200px;height:200px;animation:spin 30s linear infinite">
+            <div class="tech-icon" style="top:-25px;left:50%;transform:translateX(-50%);font-size:9px">OGL</div>
+            <div class="tech-icon" style="bottom:-25px;left:50%;transform:translateX(-50%);font-size:9px">UNI</div>
+            <div class="tech-icon" style="right:-25px;top:50%;transform:translateY(-50%);font-size:9px">DOC</div>
+            <div class="tech-icon" style="left:-25px;top:50%;transform:translateY(-50%);font-size:9px">ARD</div>
+          </div>
+          <div class="orbit-center" style="width:70px;height:70px;background:radial-gradient(circle,rgba(167,139,250,0.2),rgba(167,139,250,0.05));border-color:rgba(167,139,250,0.2)">
+            <div class="orbit-dot" style="background:var(--accent3);box-shadow:0 0 30px var(--accent3)"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:220px">
+          <span class="tech-pill"><span class="dot" style="background:#3ddc84"></span>OpenGL</span>
+          <span class="tech-pill"><span class="dot" style="background:#a78bfa"></span>Unity Hub</span>
+          <span class="tech-pill"><span class="dot" style="background:#38bdf8"></span>Docker</span>
+          <span class="tech-pill"><span class="dot" style="background:#e8572a"></span>Arduino IDE</span>
+          <span class="tech-pill"><span class="dot" style="background:#ff9900"></span>CPU Simulator</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -640,8 +682,8 @@
     <div class="project-card reveal d1">
       <div class="project-meta">
         <div class="project-tags">
-          <span class="p-tag red">+ Simulation</span>
-          <span class="p-tag">Proteus</span>
+          <span class="p-tag red">+ CAD</span>
+          <span class="p-tag">Fusion360</span>
         </div>
         <div style="display:flex;align-items:center;gap:16px">
           <span class="p-year">2025</span>
@@ -650,18 +692,18 @@
       </div>
       <div style="display:flex;align-items:center">
         <span class="p-num">01</span>
-        <h3 class="p-name">Robot Controller Simulation</h3>
+        <h3 class="p-name">Robotic Arm — CAD Model</h3>
       </div>
-      <p class="p-desc">Simulated controllers for specific robots using Proteus. Designed and tested control logic for robotic behavior in a virtual environment.</p>
+      <p class="p-desc">Designed a fully articulated robotic arm working model in Fusion360, simulating joint movement and structural constraints.</p>
       <div class="p-stack">
-        <span class="s-tag">Proteus</span><span class="s-tag">Simulation</span><span class="s-tag">Circuit Design</span><span class="s-tag">Electronics</span><span class="s-tag">Robotics</span>
+        <span class="s-tag">Fusion360</span><span class="s-tag">CAD</span><span class="s-tag">3D Modeling</span>
       </div>
     </div>
     <div class="project-card reveal d2">
       <div class="project-meta">
         <div class="project-tags">
           <span class="p-tag blue">+ Finance</span>
-          <span class="p-tag">Python</span>
+          <span class="p-tag">Data</span>
         </div>
         <div style="display:flex;align-items:center;gap:16px">
           <span class="p-year">2026</span>
@@ -670,11 +712,11 @@
       </div>
       <div style="display:flex;align-items:center">
         <span class="p-num">02</span>
-        <h3 class="p-name">Stock Market Simulation</h3>
+        <h3 class="p-name">MSI — Market Structure Intelligence</h3>
       </div>
-      <p class="p-desc">Simulated stock market behavior and trading patterns using Python. Models price fluctuations and basic trading logic in a controlled environment.</p>
+      <p class="p-desc">Interactive financial network analysis dashboard tracking structural connections across 20 global assets using graph theory and eigenvector centrality.</p>
       <div class="p-stack">
-        <span class="s-tag">Python</span><span class="s-tag">Data Analysis</span><span class="s-tag">Machine Learning</span><span class="s-tag">Data Logic</span><span class="s-tag">Simulation</span>
+        <span class="s-tag">Python</span><span class="s-tag">NetworkX</span><span class="s-tag">Plotly</span><span class="s-tag">Graph Theory</span>
       </div>
     </div>
     <div class="project-card reveal d3">
@@ -704,12 +746,15 @@
 <section id="experience">
   <div class="bg-glow" style="width:600px;height:600px;background:radial-gradient(circle,#a78bfa11,transparent 70%);bottom:-10%;left:-10%"></div>
   <div class="section-header reveal" style="width:100%;max-width:900px;position:relative;z-index:2">
-    <p class="section-overline">History</p>
+    <p class="section-overline">Background</p>
     <div class="section-sep-purple"></div>
-    <h2 class="section-title">Currently studying.<br/>Always building.</h2>
-    <span class="count-badge" style="top:auto;bottom:0">1 Institution</span>
+    <h2 class="section-title">Where I've been.<br/>What I've done.</h2>
+    <span class="count-badge" style="top:auto;bottom:0">6 Entries</span>
   </div>
   <div class="exp-list">
+
+    <p class="skills-label" style="margin-bottom:12px;position:relative;z-index:2">Education & Hackathons</p>
+
     <div class="exp-card reveal d1">
       <div class="exp-header">
         <div style="display:flex;align-items:center">
@@ -718,8 +763,8 @@
         </div>
         <span class="exp-date">2025 – 2029</span>
       </div>
-      <h3 class="exp-role">B.Tech. Computer Engineering (Software Engineering)</h3>
-      <p class="exp-desc">First year student at MIT Academy of Engineering, Alandi, Pune. Affiliated to Savitribai Phule Pune University. Currently learning core CS fundamentals while building projects in Python, C, and web technologies.</p>
+      <h3 class="exp-role">B.E. Computer Engineering (Software Engineering)</h3>
+      <p class="exp-desc">Student at MIT Academy of Engineering, Alandi, Pune. Affiliated to Savitribai Phule Pune University. Building core CS fundamentals alongside real projects in Python, C, and web technologies.</p>
       <div class="exp-tags">
         <span class="e-tag">SPPU</span><span class="e-tag">Computer Engineering</span><span class="e-tag">Software Engineering</span><span class="e-tag">FY 2025-26</span>
       </div>
@@ -728,14 +773,76 @@
       <div class="exp-header">
         <div style="display:flex;align-items:center">
           <span class="exp-num">02</span>
-          <span class="exp-co">MITAOE</span>
+          <span class="exp-co">SKNCOE</span>
+        </div>
+        <span class="exp-date">Oct 2026</span>
+      </div>
+      <h3 class="exp-role">Finalist — Fusion Hackathon (IoT Domain)</h3>
+      <p class="exp-desc">Built an obstacle detection and path relocation robot in under 5 hours at the Fusion Hackathon organized by SKNCOE, Pune. Ranked in the top 5 teams in the IoT domain.</p>
+      <div class="exp-tags">
+        <span class="e-tag">IoT</span><span class="e-tag">Robotics</span><span class="e-tag">Arduino</span><span class="e-tag">Top 5</span>
+      </div>
+    </div>
+
+    <p class="skills-label" style="margin:28px 0 12px;position:relative;z-index:2">Clubs & Roles</p>
+
+    <div class="exp-card reveal d3">
+      <div class="exp-header">
+        <div style="display:flex;align-items:center">
+          <span class="exp-num">03</span>
+          <span class="exp-co">Invictus</span>
         </div>
         <span class="exp-date">2025 – Present</span>
       </div>
       <h3 class="exp-role">Member — Invictus Robotics Club</h3>
-      <p class="exp-desc">Active member of Invictus, the official robotics club at MITAOE. Engaging with robotics, simulations, and hands-on engineering challenges alongside like-minded peers.</p>
+      <p class="exp-desc">Active member of Invictus, the official robotics club at MITAOE. Engaging with robotics, simulations, and hands-on engineering challenges.</p>
       <div class="exp-tags">
         <span class="e-tag">Robotics</span><span class="e-tag">Simulation</span><span class="e-tag">Proteus</span><span class="e-tag">Fusion360</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal d4">
+      <div class="exp-header">
+        <div style="display:flex;align-items:center">
+          <span class="exp-num">04</span>
+          <span class="exp-co">Rotaract</span>
+        </div>
+        <span class="exp-date">2025 – Present</span>
+      </div>
+      <h3 class="exp-role">Tech Director — Rotaract Club of MIT Academy of Engineering</h3>
+      <p class="exp-desc">Leading the technical operations of the Rotaract Club at MITAOE. Managing digital presence, tech initiatives, and event support for the club.</p>
+      <div class="exp-tags">
+        <span class="e-tag">Leadership</span><span class="e-tag">Tech Management</span><span class="e-tag">Web</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal d1">
+      <div class="exp-header">
+        <div style="display:flex;align-items:center">
+          <span class="exp-num">05</span>
+          <span class="exp-co">SESA</span>
+        </div>
+        <span class="exp-date">2025 – Present</span>
+      </div>
+      <h3 class="exp-role">Tech Team — Software Engineering Student Association</h3>
+      <p class="exp-desc">Part of the technical team at SESA, MITAOE's student body for software engineering. Contributing to technical events, workshops, and student initiatives.</p>
+      <div class="exp-tags">
+        <span class="e-tag">Tech Team</span><span class="e-tag">Software Engineering</span><span class="e-tag">Student Body</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal d2">
+      <div class="exp-header">
+        <div style="display:flex;align-items:center">
+          <span class="exp-num">06</span>
+          <span class="exp-co">ACM</span>
+        </div>
+        <span class="exp-date">2025 – Present</span>
+      </div>
+      <h3 class="exp-role">Executive Member — Association for Computing Machinery</h3>
+      <p class="exp-desc">Executive member of the ACM student chapter at MITAOE. Participating in computing-focused events, technical discussions, and community building within the chapter.</p>
+      <div class="exp-tags">
+        <span class="e-tag">ACM</span><span class="e-tag">Computing</span><span class="e-tag">Executive</span>
       </div>
     </div>
   </div>
@@ -754,7 +861,7 @@
     <a href="https://github.com/Sai-fi410/" class="soc">GitHub</a>
     <a href="https://www.linkedin.com/in/sai-dhapte-749a12386/" class="soc">LinkedIn</a>
     <a href="#" class="soc">Twitter</a>
-    <a href="#" class="soc">Resume ↓</a>
+    <a href="https://drive.google.com/file/d/1_QPPgHCsRbfhEsKVqOlaNmt8HHfHHTwU/view?usp=drivesdk" target="_blank" class="soc">Resume ↓</a>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Sai</span>
@@ -810,17 +917,18 @@
 const popupData = {
     1: {
       num: '01',
-      tags: ['Simulation', 'Proteus'],
+      tags: ['CAD', 'Fusion360'],
       tagColors: ['', ''],
-      title: 'Robot Controller Simulation',
-      desc: 'Designed and simulated two Arduino-based robotics control systems in Proteus. Both circuits were tested virtually and HEX files were generated using Arduino IDE for real-world deployment.',
+      title: 'Robotic Arm — CAD Model',
+      desc: 'A fully articulated robotic arm working model designed in Fusion360. Built to simulate realistic joint movement, range of motion, and structural integrity of a multi-axis robotic arm.',
       features: [
-        'Quadruped Servo Controller using Arduino Mega 2560 — controls 8 servo motors via PWM signals with external 5V supply integration for servo stability',
-        'Self-Balancing Robot Controller using Arduino Uno + L298 Motor Driver — dual DC motor control with H-Bridge logic and tilt input simulated via potentiometer in Proteus',
-        'Both HEX files compiled and tested successfully in Proteus simulation environment'
+        'Designed all arm components from scratch in Fusion360 — base, shoulder, elbow, wrist, and gripper joints',
+        'Applied real-world constraints and joint limits to simulate actual range of motion',
+        'Modeled for structural balance and load distribution across all axis points',
+        'Working model demonstrating full articulation across multiple degrees of freedom'
       ],
-      stack: ['Arduino', 'Proteus', 'C++', 'PWM', 'L298 Driver', 'Arduino IDE'],
-      links: [{ label: 'GitHub', url: 'https://github.com' }]
+      stack: ['Fusion360', 'CAD', '3D Modeling', 'Mechanical Design'],
+      links: []
     },
     2: {
       num: '02',
